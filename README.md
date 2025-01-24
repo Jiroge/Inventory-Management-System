@@ -27,7 +27,7 @@ To set up the database, follow these steps:
             name VARCHAR(255) NOT NULL,
             item_type VARCHAR(100) NOT NULL,
             item_amount INT NOT NULL,
-            price DECIMAL(10, 2) NOT NULL, -- Added price column
+            price DECIMAL(10, 2) NOT NULL,
             created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             last_update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             created_editor VARCHAR(100) NOT NULL,
