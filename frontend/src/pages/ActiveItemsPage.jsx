@@ -122,7 +122,7 @@ const ActiveItemsPage = () => {
       <div className="mb-4 flex space-x-2">
         <input
           type="text"
-          placeholder="Search items..."
+          placeholder="Search items by name"
           value={searchTerm}
           onChange={(e) => handleSearch(e.target.value)}
           className="flex-grow p-2 border rounded"
