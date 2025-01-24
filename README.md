@@ -125,3 +125,15 @@ npm run dev
 
 ## Final Steps
 Once both the backend and frontend are running, your application should be live! You can open your browser and access the frontend to interact with the inventory management system.
+
+## Short concepts about the web
+* Display item Separated by active and inactive and navigate by Top Bar
+* Include a search input to search database items by name, with real-time character matching
+* Display a modal for editing item details when requested
+* Show a modal for adding new data when requested
+* When an item is deleted, change its status to 0 and add a separate page to show deleted items with a restore button
+* Implement logging process in the backend/logs/ directory, with logs separated by date in the format: "Date process -- Editor -- Action performed"
+   * Log search process
+   * Log item edits
+   * Log new item creation
+   * Log item deletion
