@@ -14,7 +14,8 @@ const EditItemModal = ({ isOpen, onClose, initialData }) => {
     name: "",
     item_type: "",
     item_amount: 0,
-    last_editor : ROLE,
+    price: 0,
+    last_editor: ROLE,
   });
 
   useEffect(() => {
@@ -23,7 +24,8 @@ const EditItemModal = ({ isOpen, onClose, initialData }) => {
         name: initialData.name || "",
         item_type: initialData.item_type || "",
         item_amount: initialData.item_amount || 0,
-        editor : ROLE,
+        price: initialData.price || 0,
+        editor: ROLE,
       });
     }
   }, [initialData]);
@@ -91,6 +93,17 @@ const EditItemModal = ({ isOpen, onClose, initialData }) => {
               required
             />
           </div>
+          <div className="mb-4">
+            <label className="block mb-2">Item Price</label>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
           <div className="flex justify-end space-x-2">
             <button
               type="button"
@@ -119,6 +132,7 @@ EditItemModal.propTypes = {
     name: PropTypes.string,
     item_type: PropTypes.string,
     item_amount: PropTypes.number,
+    price: PropTypes.number,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
 };

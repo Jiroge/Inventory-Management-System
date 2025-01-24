@@ -14,6 +14,7 @@ const AddItemModal = ({ isOpen, onClose }) => {
     name: "",
     item_type: "",
     item_amount: 0,
+    price: 0,
     created_editor: ROLE,
     last_editor : ROLE,
   });
@@ -73,6 +74,17 @@ const AddItemModal = ({ isOpen, onClose }) => {
               type="number"
               name="item_amount"
               value={formData.item_amount}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2">Item Price</label>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
               onChange={handleChange}
               className="w-full p-2 border rounded"
               required

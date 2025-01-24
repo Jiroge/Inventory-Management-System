@@ -46,6 +46,7 @@ router.put("/:editor/:id", async (req, res) => {
       name: req.body.name,
       item_type: req.body.item_type,
       item_amount: req.body.item_amount,
+      price: req.body.price,
     };
 
     await ItemModel.updateItem(id, updateData);

@@ -10,7 +10,9 @@ const ItemList = ({ items, onEditItem, onDeleteItem }) => {
             <th className="border p-2">ID</th>
             <th className="border p-2">Name</th>
             <th className="border p-2">Type</th>
+            <th className="border p-2">Price</th>
             <th className="border p-2">Amount</th>
+            <th className="border p-2">Created DAte</th>
             <th className="border p-2">Actions</th>
           </tr>
         </thead>
@@ -23,7 +25,14 @@ const ItemList = ({ items, onEditItem, onDeleteItem }) => {
                   <td className="border p-2">{item.name || "Unnamed Item"}</td>
                   <td className="border p-2">{item.item_type || "Unknown"}</td>
                   <td className="border p-2 text-center">
-                    {item.item_amount || 0}
+                    {Number(item.price).toLocaleString() || "Unknown"}
+                  </td>
+                  <td className="border p-2 text-center">
+                    {Number(item.item_amount).toLocaleString() || 0}
+                  </td>
+                  <td className="border p-2 text-center">
+                    {new Date(item.created_date).toLocaleDateString() ||
+                      "Unknown"}
                   </td>
                   <td className="border p-2">
                     <div className="flex justify-center space-x-2">
