@@ -1,44 +1,54 @@
-import  { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
 
-const EditItemModal = ({ 
-  isOpen, 
-  onClose, 
-  onSubmit, 
-  initialData 
-}) => {
+import { config } from "../../config/config";
+import SuccessAlert from "./alerts/Success";
+import ErrorAlert from "./alerts/Error";
+
+const EditItemModal = ({ isOpen, onClose, initialData }) => {
+  const BACKEND_URL = config.BACKEND_URL;
+  const ROLE = config.ROLE;
+
   const [formData, setFormData] = useState({
-    name: '',
-    item_type: '',
+    name: "",
+    item_type: "",
     item_amount: 0,
-    last_editor: 'Admin'
+    last_editor : ROLE,
   });
 
   useEffect(() => {
     if (initialData) {
       setFormData({
-        name: initialData.name || '',
-        item_type: initialData.item_type || '',
+        name: initialData.name || "",
+        item_type: initialData.item_type || "",
         item_amount: initialData.item_amount || 0,
-        last_editor: 'Admin'
+        editor : ROLE,
       });
     }
   }, [initialData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit({
-      ...formData,
-      id: initialData.id
-    });
+    try {
+      await axios.put(
+        `${BACKEND_URL}/v1/api/items/${ROLE}/${initialData.id}`,
+        formData
+      );
+      await SuccessAlert();
+      onClose();
+    } catch (error) {
+      console.error("Update failed", error);
+      await ErrorAlert();
+    }
   };
 
   if (!isOpen) return null;
@@ -82,15 +92,15 @@ const EditItemModal = ({
             />
           </div>
           <div className="flex justify-end space-x-2">
-            <button 
+            <button
               type="button"
-              onClick={onClose} 
+              onClick={onClose}
               className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
             >
               Cancel
             </button>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
               Update
@@ -101,16 +111,16 @@ const EditItemModal = ({
     </div>
   );
 };
+
 EditItemModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
   initialData: PropTypes.shape({
     name: PropTypes.string,
     item_type: PropTypes.string,
     item_amount: PropTypes.number,
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-  })
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  }),
 };
 
 export default EditItemModal;

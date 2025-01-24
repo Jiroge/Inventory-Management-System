@@ -1,9 +1,9 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const itemRoutes = require('./routes/itemRoutes');
-const logger = require('./middleware/logger');
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const itemRoutes = require("./routes/itemRoutes");
+const logger = require("./middleware/logger");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(logger);
 
 // Routes
-app.use('/api/items', itemRoutes);
+app.use("/v1/api/items", itemRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

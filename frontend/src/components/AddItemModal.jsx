@@ -1,30 +1,41 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
 
-const AddItemModal = ({ 
-  isOpen, 
-  onClose, 
-  onSubmit 
-}) => {
+import { config } from "../../config/config";
+import SuccessAlert from "./alerts/Success";
+import ErrorAlert from "./alerts/Error";
+
+const AddItemModal = ({ isOpen, onClose }) => {
+  const BACKEND_URL = config.BACKEND_URL;
+  const ROLE = config.ROLE;
+
   const [formData, setFormData] = useState({
-    name: '',
-    item_type: '',
+    name: "",
+    item_type: "",
     item_amount: 0,
-    created_editor: 'Admin',
-    last_editor: 'Admin'
+    created_editor: ROLE,
+    last_editor : ROLE,
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    try {
+      await axios.post(`${BACKEND_URL}/v1/api/items/${ROLE}`, formData);
+      await SuccessAlert();
+      onClose();
+    } catch (error) {
+      console.error("Update failed", error);
+      await ErrorAlert();
+    }
   };
 
   if (!isOpen) return null;
@@ -68,15 +79,15 @@ const AddItemModal = ({
             />
           </div>
           <div className="flex justify-end space-x-2">
-            <button 
+            <button
               type="button"
-              onClick={onClose} 
+              onClick={onClose}
               className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
             >
               Cancel
             </button>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
               Add
@@ -90,7 +101,6 @@ const AddItemModal = ({
 AddItemModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
 };
 
 export default AddItemModal;

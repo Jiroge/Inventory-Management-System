@@ -1,8 +1,8 @@
-const express = require('express');
-const ItemModel = require('../models/itemModel');
+const express = require("express");
+const ItemModel = require("../models/itemModel");
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get("/:editor", async (req, res) => {
   try {
     const items = await ItemModel.getAllActiveItems();
     res.json(items);
@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/deleted', async (req, res) => {
+router.get("/:editor/deleted", async (req, res) => {
   try {
     const items = await ItemModel.getAllDeletedItems();
     res.json(items);
@@ -20,7 +20,7 @@ router.get('/deleted', async (req, res) => {
   }
 });
 
-router.get('/search', async (req, res) => {
+router.get("/:editor/search", async (req, res) => {
   try {
     const { name } = req.query;
     const items = await ItemModel.searchItems(name);
@@ -30,7 +30,7 @@ router.get('/search', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post("/:editor", async (req, res) => {
   try {
     const newItem = await ItemModel.addItem(req.body);
     res.status(201).json({ id: newItem });
@@ -39,19 +39,26 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put("/:editor/:id", async (req, res) => {
   try {
-    await ItemModel.updateItem(req.params.id, req.body);
-    res.json({ message: 'Item updated successfully' });
+    const { id } = req.params;
+    const updateData = {
+      name: req.body.name,
+      item_type: req.body.item_type,
+      item_amount: req.body.item_amount,
+    };
+
+    await ItemModel.updateItem(id, updateData);
+    res.json({ message: "Item updated successfully" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete("/:editor/:id", async (req, res) => {
   try {
     await ItemModel.softDeleteItem(req.params.id);
-    res.json({ message: 'Item soft-deleted successfully' });
+    res.json({ message: "Item soft-deleted successfully" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
